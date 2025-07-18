@@ -2,3 +2,17 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+data = pd.read_csv(r"F:\dataset\housing_price_2.csv")
+#take columns to change to 1 and 0
+cols_to_map = ["mainroad",
+               "guestroom",
+               "basement",
+               "hotwaterheating",
+               "airconditioning",
+               "prefarea"]
+#change yes, no to 1, 0
+for i in range(len(cols_to_map)):
+    data[cols_to_map[i]] = data[cols_to_map[i]].map({"yes": 1, "no": 0})
+
+
+print(data.head())
