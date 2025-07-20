@@ -63,10 +63,16 @@ def predict(X, w, b):
     f_wb = X @ w + b
     return f_wb
 
+def standardscaler(col):
+    mean = np.mean(col)
+    std = np.std(col)
+    scaled_col = (col - mean)/std
+    return scaled_col, mean, std
+
 
 # take the shape
-# y_train = training_set["price"]
-# training_set.drop('price', axis=1, inplace=True)
+y_train = training_set["Price"]
+training_set.drop('Price', axis=1, inplace=True)
 
 # define some nums
 m, n = training_set.shape
@@ -75,14 +81,21 @@ b = 0
 num_iters = 5000
 alpha = 0.01
 
-# # plot the feature
-# cols = training_set.columns
-# # plt.show()
-# for i in range(len(cols)):
-#     plt.figure(i)
-#     plt.scatter(training_set[cols[i]], y_train)
-#     plt.xlabel(cols[i])
-# plt.show()
+#take the columns
+cols = training_set.columns
+
+#scale the features
+dct =  {}
+for i in range(len(cols)):
+    training_set[cols[i]], mean, std = standardscaler(training_set[cols[i]])
+    dct[cols[i]] = (mean,std)
+
+# plot the feature
+for i in range(len(cols)):
+    plt.figure(i)
+    plt.scatter(training_set[cols[i]], y_train)
+    plt.xlabel(cols[i])
+plt.show()
 
 # w, b = gradient_descent(training_set, y_train, w, b, alpha, num_iters)
 # predicted_value = predict(training_set, w, b)
